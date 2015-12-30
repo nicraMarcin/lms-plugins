@@ -2,7 +2,7 @@ DELIMITER ;;
 
 CREATE TRIGGER `log_pub_ip_insert` AFTER INSERT ON `nodes` FOR EACH ROW
 BEGIN
-   INSERT INTO nodelogipchange
+   INSERT INTO nodeipchangelog
    (
       ipaddr_pub_new,
       moddate,
@@ -20,7 +20,7 @@ CREATE TRIGGER `log_pub_ip_update` BEFORE UPDATE ON `nodes` FOR EACH ROW
 BEGIN
 IF OLD.ipaddr_pub != NEW.ipaddr_pub
    THEN
-      INSERT INTO nodelogipchange
+      INSERT INTO nodeipchangelog
       (
          ipaddr_pub,
          ipaddr_pub_new,
@@ -39,7 +39,7 @@ END;;
 
 CREATE TRIGGER `log_pub_ip_delete` BEFORE DELETE ON `nodes` FOR EACH ROW
 BEGIN
-   INSERT INTO nodelogipchange
+   INSERT INTO nodeipchangelog
    (
       ipaddr_pub,
       moddate,
