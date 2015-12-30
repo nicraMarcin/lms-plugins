@@ -1,0 +1,52 @@
+{include file="header.html"}
+<table class="lmsbox">
+    <thead>
+        <tr>
+            <th>
+                <form enctype="multipart/form-data" action="?m=cashimportokbs&act=parsexml" method="POST">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="5000000" />
+                    <input name="plik" type="file" />
+                    <input name="submit" type="submit" value="Wyslij" />
+                </form>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            {if $rows_affected}
+                <p>Dodano {$rows_affected} rekordów. Na kwotę {$suma_wplat} zł.</p>
+            {/if}
+
+            {if $arr}
+            <h1>Dane prawidłowe:</h1>
+            <table border class="lmsbox">
+                <thead>
+                    <tr><th>L.p.</th><th>Data ksiegowania</th><th>Kwota</th><th>Zleceniodawca</th><th>Tytułem</th></tr>
+                </thead>
+                <tbody>
+                    {foreach from=$arr item=i}
+                    <tr><td>{$i.id}</td><td>{$i.date}</td><td>{$i.value}</td><td>{$i.customer}</td><td>{$i.description}</td></tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            {/if}
+
+            {if $arr_dup}
+            <h1>Duplikaty:</h1>
+            <table border class="lmsbox">
+                <thead>
+                    <tr><th>L.p.</th><th>Data ksiegowania</th><th>Kwota</th><th>Zleceniodawca</th><th>Tytułem</th></tr>
+                </thead>
+                <tbody>
+                    {foreach from=$arr_dup item=i}
+                    <tr><td>{$i.id}</td><td>{$i.date}</td><td>{$i.value}</td><td>{$i.customer}</td><td>{$i.description}</td></tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            {/if}
+        </td>
+    </tr>
+    </tbody>
+</table>
+{include file="footer.html"}
