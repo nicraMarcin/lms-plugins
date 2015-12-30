@@ -1,0 +1,31 @@
+{include file="header.html"}
+<table class="lmsbox">
+    <thead>
+        <tr>
+            <th>{t}the average age{/t}: {$srednia} {t}years{/t}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="vertical-align:top">
+                <table border class="lmsbox">
+                    <thead>
+                        <tr>
+                            <th>{t}age{/t}</th>
+                            <th>{t}number of people{/t}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$all item=i}
+                        <tr>
+                            <td>{$i.wiek}</td>
+                            <td>{$i.ilosc}</td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{include file="footer.html"}
