@@ -1,6 +1,6 @@
 # LMSBalanceConnectionsPlugin
 
-Zestawienie dodany i usuniętych klietnów w ujęciu miesięcznym.
+Zestawienie dodanych i usuniętych klietnów w ujęciu miesięcznym.
 
 ## Instalacja 
 
