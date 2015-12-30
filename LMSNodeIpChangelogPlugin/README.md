@@ -1,0 +1,1 @@
+Apply sql queries from *LMSNodeIpChangelog/sql* to db before start.
