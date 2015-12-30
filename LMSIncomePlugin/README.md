@@ -1,6 +1,6 @@
 # LMSIncomePlugin
 
-Zbiercze przestawienie przychodu z podziałem na dni w ujęciu miesięcznym oraz na miesiące w ujęciu rocznym.
+Zbiorcze przedstawienie przychodu z podziałem na dni w ujęciu miesięcznym oraz na miesiące w ujęciu rocznym.
 
 ## Instalacja 
 
