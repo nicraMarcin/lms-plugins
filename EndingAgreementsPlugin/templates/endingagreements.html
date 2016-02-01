@@ -1,0 +1,57 @@
+{include file="header.html"}
+<table class="lmsbox">
+    <thead>
+        <tr>
+            <th>
+                <form method="get" name="form_expires_after" action="?m=endingagreements&expires_after={$expires_after}&doc_type={$doc_type}">
+                    <INPUT TYPE="HIDDEN" NAME="m" VALUE="endingagreements">
+                    {t}Document expire within{/t}:
+                    <select size="1" name="expires_after">
+                        <OPTION VALUE="0">... {trans("select period")} ...</OPTION>
+                        {foreach from=$expire_after_periods key=key item=item}
+                        <option {if $selected_expires_after == $key}selected{/if} value="{$key}">{$item}</option>
+                        {/foreach}
+                    </select>
+                    {t}Document type{/t}:
+                    <SELECT SIZE="1" NAME="doc_type">
+                        <OPTION VALUE="0">... {trans("select type")} ...</OPTION>
+                        {foreach from=$doc_types key=key item=item}
+                        <OPTION VALUE="{$key}" {if $selected_doc_type==$key} SELECTED{/if}>{$item}</OPTION>
+                        {/foreach}
+                    </SELECT>
+                    <INPUT type="submit">
+                </form>
+                <span style="float:right;">{t}Documents found{/t}: {$count_contracts}</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="vertical-align:top">
+                <table border class="lmsbox">
+                    <thead>
+                        <tr>
+                            <th>{t}Expiration date{/t}</th>
+                            <th>{t}Customer ID{/t}</th>
+                            <th>{t}Customer{/t}</th>
+                            <th>{t}Address{/t}</th>
+                            <th>{t}Document type{/t}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$contracts item=i}
+                        <tr>
+                            <td>{$i.todate}</td>
+                            <td>{$i.customerid}</td>
+                            <td><a href="?m=customerinfo&id={$i.customerid}">{$i.name}</a></td>
+                            <td>{$i.address}</td>
+                            <td><a href="?m=documentview&id={$i.docid}">{$i.typedescription}</a></td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{include file="footer.html"}
