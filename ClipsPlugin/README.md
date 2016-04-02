@@ -1,4 +1,4 @@
-# Clipslugin
+# ClipsPlugin
 
 Zarządzanie sesjami CLIPS dla SmartEdge.
 
