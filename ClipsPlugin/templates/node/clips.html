@@ -1,0 +1,77 @@
+<table class="lmsbox">
+    <thead>
+        <tr onclick="showOrHide('nodesessionpanel');">
+            <td class="fall">
+                <img src="img/calendar.gif" alt="">
+                <b><a name="nodesessions">{trans("Node Sessions:")}</a></b>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr id="nodesessionpanel" style="display:none;">
+            <td class="fall">
+                <table cellpadding="5" width="100%">
+                    <tr class="dark text-center">
+                        <td>{trans("Started:")}</td>
+                        <td>{trans("Finished:")}</td>
+                        <td>{trans("Time Duration:")}</td>
+                        <td>{trans("Terminate Cause:")}</td>
+                        <td>{trans("Downloaded:")}</td>
+                        <td>{trans("Uploaded:")}</td>
+                        <td>{trans("NAS IP:")}</td>
+                        <td>{trans("IP Address:")}</td>
+                    </tr>
+                    {cycle values="light,lucid" print=false}
+                    {section name=arr loop=$nodeinfo.sessions}
+                    {assign var=item value=$nodeinfo.sessions[arr]}
+                    <tr class="text-center highlight {cycle}">
+                        <td>{$item.acctstarttime}</td>
+                        <td>{$item.acctstoptime}</td>
+                        <td>{$item.acctsessiontime}</td>
+                        <td>{$item.acctterminatecause}</td>
+                        <td>{$item.acctoutputoctets}</td>
+                        <td>{$item.acctinputoctets}</td>
+                        <td>{$item.nasipaddress}</td>
+                        <td>{$item.framedipaddress}</td>
+                    </tr>
+                    {/section}
+                    <tr>
+                        <td colspan="8" class="dark text-center">
+                            <a href="./?m=nodeinfo&id={$nodeinfo.id}&updatenode=1">{trans("Apply changes")}</a> &nbsp; # &nbsp;
+                            <a href="./?m=nodeinfo&id={$nodeinfo.id}&disconnectnode=1">{trans("Terminate session")}</a> &nbsp; # &nbsp;
+                            <a href="./?m=nodeinfo&id={$nodeinfo.id}&clips=1">{trans("Show active session")}</a>
+                        </td>
+                    </tr>
+                    {if isset($nodeinfo.clips_session_update) }
+                    <tr>
+                        <td colspan="8" class="light">
+                            <div style="border:1px solid black;padding:1em;margin:1em;">
+                                <p>{trans("New session settings")}:</p>
+                                <ul>
+                                    <li>{trans("MAC")}: <strong>{$nodeinfo.clips_session_update.mac}</strong></li>
+                                    <li>{trans("Download rate")}: <strong>{$nodeinfo.clips_session_update.dl_ceil/1024}</strong> Mb/s</li>
+                                    <li>{trans("Upload rate")}: <strong>{$nodeinfo.clips_session_update.up_ceil/1024}</strong> Mb/s</li>
+                                    <li>{trans("Redirect")}: <strong>{if $nodeinfo.clips_session_update.redirect eq 1}{trans("Yes")}{else}{trans("No")}{/if}</strong></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {/if}
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{if isset($nodeinfo.clips_session_info) }
+<div style="border:1px solid black;padding:1em;margin:1em;">
+    <pre>{$nodeinfo.clips_session_info}</pre>
+</div>
+{/if}
+{literal}
+<SCRIPT type="text/javascript">
+<!--
+    if (getCookie('nodesessionpanel') == '1')
+        document.getElementById('nodesessionpanel').style.display = '';
+//-->
+</SCRIPT>
+{/literal}
