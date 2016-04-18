@@ -66,7 +66,7 @@ class ClipsHandler {
 
         $forward_policy_default = $CONFIG['clips']['forward_policy_default'];
         $forward_policy_redirect = $CONFIG['clips']['forward_policy_redirect'];
-        $http_redirect = $CONFIG['clips']['httpd_redirect'];
+        $http_redirect = $CONFIG['clips']['http_redirect'];
         $nas_ip = $CONFIG['clips']['nas_ip'];
         $nas_pass = $CONFIG['clips']['nas_pass'];
         $clips_context = $CONFIG['clips']['context'];
