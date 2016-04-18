@@ -66,19 +66,43 @@ class ClipsHandler {
 
         $forward_policy_default = $CONFIG['clips']['forward_policy_default'];
         $forward_policy_redirect = $CONFIG['clips']['forward_policy_redirect'];
+        $forward_policy_block = $CONFIG['clips']['forward_policy_block'];
         $http_redirect = $CONFIG['clips']['http_redirect'];
         $nas_ip = $CONFIG['clips']['nas_ip'];
         $nas_pass = $CONFIG['clips']['nas_pass'];
         $clips_context = $CONFIG['clips']['context'];
 
-        $node = $DB->GetRow("SELECT lower(m.mac) AS mac,t.downceil AS dl_ceil, t.upceil AS up_ceil, CASE WHEN n.access = 0 OR n.warning = 1 THEN 1 ELSE 0 END AS redirect FROM nodeassignments na INNER JOIN assignments a ON (na.assignmentid = a.id) AND ((UNIX_TIMESTAMP() >= datefrom AND UNIX_TIMESTAMP() <= dateto) OR (UNIX_TIMESTAMP() >= datefrom AND dateto = 0)) INNER JOIN tariffs t ON (a.tariffid = t.id) INNER JOIN nodes n ON (na.nodeid = n.id) INNER JOIN macs m ON (m.nodeid = n.id) WHERE n.id = ?;", array($nid));
+        $node = $DB->GetRow("
+        SELECT
+        lower(m.mac) AS mac,
+        t.downceil AS dl_ceil,
+        t.upceil AS up_ceil,
+        n.access AS access,
+        n.warning AS warning
+        FROM nodeassignments na
+        INNER JOIN assignments a ON (na.assignmentid = a.id) AND ((UNIX_TIMESTAMP() >= datefrom AND UNIX_TIMESTAMP() <= dateto) OR (UNIX_TIMESTAMP() >= datefrom AND dateto = 0))
+        INNER JOIN tariffs t ON (a.tariffid = t.id)
+        INNER JOIN nodes n ON (na.nodeid = n.id)
+        INNER JOIN macs m ON (m.nodeid = n.id)
+        WHERE n.id = ?;", array($nid));
 
-        if ($node[redirect] == 0) {
-            $forwardpolicy = $forward_policy_default;
-            $httpredirect = "";
-        } else {
+        // $node[warning]
+        // 0 - without warning
+        // 1 - with warning
+        //
+        // $node[access]
+        // 0 - block access
+        // 1 - allow access
+
+        if ($node[warning] == 1) {
             $forwardpolicy = $forward_policy_redirect;
             $httpredirect = $http_redirect;
+        } elseif ($node[access] == 0) {
+            $forwardpolicy = $forward_policy_block;
+            $httpredirect = $http_redirect;
+        } else {
+            $forwardpolicy = $forward_policy_default;
+            $httpredirect = "";
         }
 
         $mac = $node[mac];

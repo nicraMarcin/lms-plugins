@@ -17,6 +17,7 @@ ssh_host = 127.0.0.1
 clips_session_info = "show subscribers active username"
 forward_policy_default = "in:LMS-DEFAULT"
 forward_policy_redirect = "in:LMS-REDIRECT"
+forward_policy_block = "in:LMS-BLOCK"
 http_redirect = "HTTP-REDIRECT"
 context = "LMS"
 
