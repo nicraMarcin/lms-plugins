@@ -15,10 +15,10 @@ ssh_host = 127.0.0.1
 
 ; CLIPS setting
 clips_session_info = "show subscribers active username"
-forward_policy_default = "in:DEFAULT"
-forward_policy_redirect = "in:REDIRECT"
-http_redirect = "KOMUNIKATY"
-context = "CLIPS"
+forward_policy_default = "in:LMS-DEFAULT"
+forward_policy_redirect = "in:LMS-REDIRECT"
+http_redirect = "HTTP-REDIRECT"
+context = "LMS"
 
 ; NAS client
 nas_ip = 127.0.0.1
