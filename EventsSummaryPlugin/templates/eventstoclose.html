@@ -1,0 +1,28 @@
+{include file="header.html"}
+
+<table class="lmsbox">
+    <tbody>
+    <tr>
+        <td style="vertical-align:top">
+            <table border class="lmsbox">
+                <thead>
+                    <tr>
+                        <th>{t}id{/t}</th>
+                        <th>{t}created at{/t}</th>
+                        <th>{t}title{/t}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach from=$events item=i}
+                    <tr>
+			<td>{counter}</td>
+                        <td>{$i.startdate}</td>
+                        <td><a href="?m=eventinfo&amp;id={$i.id}">{$i.title}</td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </td>
+    </tbody>
+</table>
+{include file="footer.html"}

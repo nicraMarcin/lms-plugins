@@ -1,0 +1,63 @@
+{include file="header.html"}
+<h3>Zestawienie</h3>
+<table class="lmsbox">
+    <tbody>
+    <tr>
+        <td style="vertical-align:top">
+            <table border class="lmsbox">
+                <thead>
+                    <tr>
+                        <th>{t}user{/t}</th>
+                        <th>{t}all events{/t}</th>
+                        <th>{t}closed events{/t}</th>
+                        <th>{t}events to close{/t}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach from=$summary item=i}
+                    <tr>
+                        <td>{$i.name}</td>
+                        <td>{$i.wszystkie}</td>
+                        <td>{$i.zamkniete}</td>
+                        <td><a href="?m=eventstoclose&amp;userid={$i.id}">{$i.otwarte}</a></td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </td>
+    </tbody>
+</table>
+
+{if is_array($eventsNoAssign) }
+<hr>
+<h3>Lista otwartych spraw, do których nie zostały przypisane osoby.</h3>
+<table class="lmsbox">
+    <tbody>
+    <tr>
+        <td style="vertical-align:top">
+            <table border class="lmsbox">
+                <thead>
+                    <tr>
+                        <th>{t}id{/t}</th>
+                        <th>{t}created at{/t}</th>
+                        <th>{t}who create event{/t}</th>
+                        <th>{t}title{/t}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach from=$eventsNoAssign item=e}
+                    <tr>
+			<td>{counter}</td>
+                        <td>{$e.startdate}</td>
+                        <td>{$e.name}</td>
+                        <td><a href="?m=eventinfo&amp;id={$e.id}">{$e.title}</td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </td>
+    </tbody>
+</table>
+{/if}
+
+{include file="footer.html"}
