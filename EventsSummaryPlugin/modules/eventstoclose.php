@@ -1,9 +1,12 @@
 <?php
+$layout['pagetitle'] = trans('Events close');
 
 function getEventsToClose($userid) {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $events = $DB->GetAll('select from_unixtime(e.date, \'%Y-%m-%d\') AS startdate, e.title, e.id
-FROM events e, eventassignments ea where e.closed=0 and ea.userid='.$userid.' and e.id=ea.eventid');
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $events = $db->GetAll('SELECT from_unixtime(e.date, \'%Y-%m-%d\') AS startdate, e.title, e.id
+			FROM events e, eventassignments ea WHERE e.closed=0 AND ea.userid='.$userid.' AND e.id=ea.eventid');
     return $events;
 }
 
