@@ -1,0 +1,76 @@
+<div class="card">
+    <div class="card-header" onclick="showOrHide('nodesessionpanel');">
+        <strong>{trans("Node Sessions:")}</strong>
+    </div>
+    <div class="card-block" id="nodesessionpanel" style="display:none;">
+
+        <table class="table table-striped table-hover table-sm table-bordered">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>{trans("Started")}</th>
+                    <th>{trans("Finished")}</th>
+                    <th>{trans("Time Duration")}</th>
+                    <th>{trans("Terminate Cause")}</th>
+                    <th>{trans("Downloaded")}</th>
+                    <th>{trans("Uploaded")}</th>
+                    <th>{trans("NAS IP")}</th>
+                    <th>{trans("IP Address")}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {section name=arr loop=$nodeinfo.sessions}
+                    {assign var=item value=$nodeinfo.sessions[arr]}
+                    <tr>
+                        <td>{$item.acctstarttime}</td>
+                        <td>{$item.acctstoptime}</td>
+                        <td>{$item.acctsessiontime}</td>
+                        <td>{$item.acctterminatecause}</td>
+                        <td>{$item.acctoutputoctets}</td>
+                        <td>{$item.acctinputoctets}</td>
+                        <td>{$item.nasipaddress}</td>
+                        <td>{$item.framedipaddress}</td>
+                    </tr>
+                {/section}
+            </tbody>
+        </table>
+
+        {if isset($nodeinfo.clips_session_update) }
+            <div class="card">
+                <div class="card-header">
+                    {trans("New session settings")}
+                </div>
+                <div class="card-block">
+                    <ul>
+                        <li>{trans("MAC")}: <strong>{$nodeinfo.clips_session_update.mac}</strong></li>
+                        <li>{trans("Download rate")}: <strong>{$nodeinfo.clips_session_update.dl_ceil/1024}</strong> Mb/s</li>
+                        <li>{trans("Upload rate")}: <strong>{$nodeinfo.clips_session_update.up_ceil/1024}</strong> Mb/s</li>
+                        <li>{trans("Redirect")}: <strong>{if $nodeinfo.clips_session_update.redirect eq 1}{trans("Yes")}{else}{trans("No")}{/if}</strong></li>
+                    </ul>
+                </div>
+            </div>
+        {/if}            
+
+        {if isset($nodeinfo.clips_session_info) }
+            <div class="card">
+                <div class="card-header">
+                    {trans("CLIPS session information")}
+                </div>
+                <div class="card-block">
+                    <pre>{$nodeinfo.clips_session_info}</pre>
+                </div>
+            </div>
+        {/if}        
+
+        <a class="btn btn-sm btn-success" href="./?m=nodeinfo&id={$nodeinfo.id}&updatenode=1">{trans("Apply changes")}</a>
+        <a class="btn btn-sm btn-danger" href="./?m=nodeinfo&id={$nodeinfo.id}&disconnectnode=1">{trans("Terminate session")}</a>
+        <a class="btn btn-sm btn-info" href="./?m=nodeinfo&id={$nodeinfo.id}&clips=1">{trans("Show active session")}</a>
+    </div>
+</div>
+{literal}
+    <SCRIPT type="text/javascript">
+        <!--
+        if (getCookie('nodesessionpanel') == '1')
+            document.getElementById('nodesessionpanel').style.display = '';
+        //-->
+    </SCRIPT>
+{/literal}
