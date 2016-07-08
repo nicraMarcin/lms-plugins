@@ -1,9 +1,5 @@
 <?php
 
-/**
- * ClipsHandler
- *
- */
 class ClipsHandler {
 
     function formatBytes($size, $precision = 2) {
@@ -14,8 +10,9 @@ class ClipsHandler {
     }
 
     function getNodeSessions($id) {
-        global $DB;
-        if ($arr = $DB->GetAll('SELECT nasipaddress, acctstarttime, acctstoptime, acctsessiontime, acctinputoctets, acctoutputoctets, framedipaddress, acctterminatecause FROM radacct WHERE username=? ORDER BY radacctid DESC', array($id))) {
+        $db = LMSDB::getInstance();
+
+        if ($arr = $db->GetAll('SELECT nasipaddress, acctstarttime, acctstoptime, acctsessiontime, acctinputoctets, acctoutputoctets, framedipaddress, acctterminatecause FROM radacct WHERE username=? ORDER BY radacctid DESC', array($id))) {
             foreach ($arr as &$item) {
                 $item['acctinputoctets'] = $this->formatBytes($item['acctinputoctets']);
                 $item['acctoutputoctets'] = $this->formatBytes($item['acctoutputoctets']);
@@ -27,6 +24,7 @@ class ClipsHandler {
 
     function getClipsInfo($mac) {
         global $CONFIG;
+
         $ssh_host = $CONFIG['clips']['ssh_host'];
         $ssh_user = $CONFIG['clips']['ssh_user'];
         $ssh_pass = $CONFIG['clips']['ssh_pass'];
@@ -62,7 +60,8 @@ class ClipsHandler {
     }
 
     function updateClips($nid) {
-        global $DB, $CONFIG;
+        global $CONFIG;
+        $db = LMSDB::getInstance();
 
         $forward_policy_default = $CONFIG['clips']['forward_policy_default'];
         $forward_policy_redirect = $CONFIG['clips']['forward_policy_redirect'];
@@ -72,13 +71,7 @@ class ClipsHandler {
         $nas_pass = $CONFIG['clips']['nas_pass'];
         $clips_context = $CONFIG['clips']['context'];
 
-        $node = $DB->GetRow("
-        SELECT
-        lower(m.mac) AS mac,
-        t.downceil AS dl_ceil,
-        t.upceil AS up_ceil,
-        n.access AS access,
-        n.warning AS warning
+        $node = $db->GetRow("SELECT lower(m.mac) AS mac, t.downceil AS dl_ceil, t.upceil AS up_ceil, n.access AS access, n.warning AS warning
         FROM nodeassignments na
         INNER JOIN assignments a ON (na.assignmentid = a.id) AND ((UNIX_TIMESTAMP() >= datefrom AND UNIX_TIMESTAMP() <= dateto) OR (UNIX_TIMESTAMP() >= datefrom AND dateto = 0))
         INNER JOIN tariffs t ON (a.tariffid = t.id)
@@ -118,12 +111,13 @@ class ClipsHandler {
     }
 
     function deleteClips($nid) {
-        global $DB, $CONFIG;
+        global $CONFIG;
+        $db = LMSDB::getInstance();
 
         $nas_ip = $CONFIG['clips']['nas_ip'];
         $nas_pass = $CONFIG['clips']['nas_pass'];
 
-        $node = $DB->GetRow("SELECT lower(m.mac) AS mac FROM nodes n INNER JOIN macs m ON (m.nodeid = n.id) WHERE n.id = ?;", array($nid));
+        $node = $db->GetRow("SELECT lower(m.mac) AS mac FROM nodes n INNER JOIN macs m ON (m.nodeid = n.id) WHERE n.id = ?;", array($nid));
         $mac = $node[mac];
         $cmd = 'echo "User-Name=' . $mac . '" | radclient -r 1 -s -x ' . $nas_ip . ':3799 disconnect ' . $nas_pass;
 
@@ -133,14 +127,17 @@ class ClipsHandler {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
 
-        $DB->exec("UPDATE radacct SET acctstoptime=NOW(), acctterminatecause='STATE-CLEARED' WHERE acctstoptime IS NULL AND username = UPPER(?);", array($mac));
+        $db->exec("UPDATE radacct SET acctstoptime=NOW(), acctterminatecause='STATE-CLEARED' WHERE acctstoptime IS NULL AND username = UPPER(?);", array($mac));
         return true;
     }
 
     public function smartyClips(Smarty $hook_data) {
         $template_dirs = $hook_data->getTemplateDir();
-        $plugin_templates = PLUGINS_DIR . DIRECTORY_SEPARATOR . ClipsPlugin::PLUGIN_DIRECTORY_NAME . DIRECTORY_SEPARATOR . 'templates';
-        array_unshift($template_dirs, $plugin_templates);
+        $plugin_templates = PLUGINS_DIR . DIRECTORY_SEPARATOR . LMSCustomersAgePlugin::PLUGIN_DIRECTORY_NAME . DIRECTORY_SEPARATOR . 'templates';
+        $custom_templates_dir = ConfigHelper::getConfig('phpui.custom_templates_dir');
+        if (!empty($custom_templates_dir) && file_exists($plugin_templates . DIRECTORY_SEPARATOR . $custom_templates_dir) && !is_file($plugin_tempaltes . DIRECTORY_SEPARATOR . $custom_templates_dir)) {
+            $plugin_templates = PLUGINS_DIR . DIRECTORY_SEPARATOR . LMSCustomersAgePlugin::PLUGIN_DIRECTORY_NAME . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $custom_templates_dir;
+        } array_unshift($template_dirs, $plugin_templates);
         $hook_data->setTemplateDir($template_dirs);
         return $hook_data;
     }
@@ -178,6 +175,5 @@ class ClipsHandler {
         }
         return $hook_data;
     }
-
 }
 ?>
