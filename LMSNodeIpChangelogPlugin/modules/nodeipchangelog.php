@@ -1,4 +1,7 @@
 <?php
+
+$layout['pagetitle'] = trans('Node ip change log');
+
 $list_new_ip = $LMS->DB->GetAll('SELECT ipaddr_new AS ipnum, INET_NTOA(ipaddr_new) AS ip FROM nodeipchangelog WHERE ipaddr_new>170000000 ORDER BY ipaddr_new');
 
 $list = $LMS->DB->GetAll("
