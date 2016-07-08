@@ -6,6 +6,8 @@
  * $file - sprawdz czy katalog jest zapisywalny
  */
 
+$layout['pagetitle'] = trans('Cash import OKBS');
+
 $upload_dir = $CONFIG['okbank']['upload_dir'];
 $file = $upload_dir . 'index.html';
 
