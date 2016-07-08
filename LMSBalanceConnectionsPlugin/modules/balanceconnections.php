@@ -1,14 +1,20 @@
 <?php
 
+$layout['pagetitle'] = trans('Balance connections');
+
 function getFirstYear() {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $firstYear = $DB->GetOne('SELECT MIN( creationdate ) FROM customers');
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $firstYear = $db->GetOne('SELECT MIN( creationdate ) FROM customers');
     return $firstYear;
 }
 
 function addedCustomers($year) {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $newcustomers = $DB->GetAll('
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $newcustomers = $db->GetAll('
     SELECT COUNT(id) AS customers, MONTH(FROM_UNIXTIME(creationdate)) as month
     FROM customers
     WHERE deleted=0 AND YEAR(FROM_UNIXTIME(creationdate))=' . $year . ' 
@@ -18,8 +24,10 @@ function addedCustomers($year) {
 }
 
 function deletedCustomers($year) {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $deletedcustomers = $DB->GetAll('
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $deletedcustomers = $db->GetAll('
     SELECT COUNT(id) AS customers, MONTH(FROM_UNIXTIME(moddate)) as month
     FROM customers
     WHERE deleted=1 AND YEAR(FROM_UNIXTIME(moddate))=' . $year . ' 
