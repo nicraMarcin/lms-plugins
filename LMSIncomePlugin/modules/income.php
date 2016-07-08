@@ -1,14 +1,18 @@
 <?php
 
 function getFirstYear() {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $firstYear = $DB->GetOne('SELECT MIN( TIME ) FROM cash');
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $firstYear = $db->GetOne('SELECT MIN( TIME ) FROM cash');
     return $firstYear;
 }
 
 function MonthlyIncome($year, $month) {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $income = $DB->GetAll('SELECT SUM(value) AS suma, DAY(FROM_UNIXTIME(time)) as day
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $income = $db->GetAll('SELECT SUM(value) AS suma, DAY(FROM_UNIXTIME(time)) as day
                          FROM cash
                          WHERE value>0 AND YEAR(FROM_UNIXTIME(time))=' . $year . ' AND MONTH(FROM_UNIXTIME(time))=' . $month . '
                          GROUP BY DAY(FROM_UNIXTIME(time))
@@ -17,8 +21,10 @@ function MonthlyIncome($year, $month) {
 }
 
 function IncomePerMonth($only_year) {
-    global $LMS, $SMARTY, $DB, $SESSION;
-    $income = $DB->GetAll('SELECT MONTH(FROM_UNIXTIME(time)) as month, SUM(value) AS suma FROM cash WHERE value>0 AND YEAR(FROM_UNIXTIME(time))=' . $only_year . ' GROUP BY month(FROM_UNIXTIME(time))');
+    global $LMS, $SMARTY, $SESSION;
+    $db = LMSDB::getInstance();
+
+    $income = $db->GetAll('SELECT MONTH(FROM_UNIXTIME(time)) as month, SUM(value) AS suma FROM cash WHERE value>0 AND YEAR(FROM_UNIXTIME(time))=' . $only_year . ' GROUP BY month(FROM_UNIXTIME(time))');
     return $income;
 }
 
