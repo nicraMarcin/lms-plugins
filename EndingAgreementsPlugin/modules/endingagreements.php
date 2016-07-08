@@ -1,5 +1,7 @@
 <?php
 
+$layout['pagetitle'] = trans('Ending agreements');
+
 $expire_after_periods = array(
     604800 => trans('week'),
     2678400 => trans('month'),
