@@ -1,28 +1,28 @@
 {block name="nodeinfobox-leftcolumn" append}
     <TR>
-	<TD style="width: 1%;">
-	    <IMG SRC="img/ip.gif" ALT="Node ports:">
-	</TD>
-	<TD style="width: 99%;" COLSPAN="2">
-	    {trans("Open local IP")} {$nodeinfo.ip} {trans("with port")}:
+        <TD style="width: 1%;">
+            <IMG SRC="img/ip.gif" ALT="Node ports:">
+        </TD>
+        <TD style="width: 99%;" COLSPAN="2">
+            {trans("Open local IP")} {$nodeinfo.ip} {trans("with port")}:
             {section name=arr loop=$nodeinfo.ports}
-            {assign var=item value=$nodeinfo.ports[arr]}
-		[ <a href="http://{$nodeinfo.ip}:{$item}">{$item}</a> ]&nbsp;
-	    {/section}
-	</TD>
+                {assign var=item value=$nodeinfo.ports[arr]}
+                [ <a href="http://{$nodeinfo.ip}:{$item}">{$item}</a> ]&nbsp;
+            {/section}
+        </TD>
     </TR>
-{if $nodeinfo.ip_pub != "0.0.0.0"}
-    <TR>
-	<TD style="width: 1%;">
-	    <IMG SRC="img/ip.gif" ALT="Node ports:">
-	</TD>
-	<TD style="width: 99%;" COLSPAN="2">
-	    {trans("Open public IP")} {$nodeinfo.ip} {trans("with port")}:
-            {section name=arr loop=$nodeinfo.public_ports}
-            {assign var=item value=$nodeinfo.public_ports[arr]}
-		[ <a href="http://{$nodeinfo.ip_pub}:{$item}">{$item}</a> ]&nbsp;
-	    {/section}
-	</TD>
-    </TR>
-{/if}
+    {if $nodeinfo.ip_pub != "0.0.0.0"}
+        <TR>
+            <TD style="width: 1%;">
+                <IMG SRC="img/ip.gif" ALT="Node ports:">
+            </TD>
+            <TD style="width: 99%;" COLSPAN="2">
+                {trans("Open public IP")} {$nodeinfo.ip} {trans("with port")}:
+                {section name=arr loop=$nodeinfo.public_ports}
+                    {assign var=item value=$nodeinfo.public_ports[arr]}
+                    [ <a href="http://{$nodeinfo.ip_pub}:{$item}">{$item}</a> ]&nbsp;
+                {/section}
+            </TD>
+        </TR>
+    {/if}
 {/block}

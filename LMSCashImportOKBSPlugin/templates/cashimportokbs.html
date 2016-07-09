@@ -1,4 +1,6 @@
-{include file="header.html"}
+{extends file="layout.html"}
+{block name=title}::: LMS :{$layout.pagetitle|striphtml} :::{/block}
+{block name=module_content}
 <table class="lmsbox">
     <thead>
         <tr>
@@ -49,4 +51,4 @@
     </tr>
     </tbody>
 </table>
-{include file="footer.html"}
+{/block}
