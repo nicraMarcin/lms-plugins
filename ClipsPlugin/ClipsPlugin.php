@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * ClipsPlugin
+ *
+ * @author Łukasz Kopiszka <lukasz@alfa-system.pl>
+ */
 class ClipsPlugin extends LMSPlugin {
 
     const PLUGIN_NAME = 'ClipsPlugin';
