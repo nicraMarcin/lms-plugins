@@ -1,0 +1,36 @@
+{extends file="layout.html"}
+{block name=title}::: LMS :{$layout.pagetitle|striphtml} :::{/block}
+{block name=module_content}
+    <form class="form-inline" method="get" name="formpbx" action="?m=balanceconnections&year={$year}&$month={$month}">
+        <INPUT TYPE="HIDDEN" NAME="m" VALUE="balanceconnections">
+        <select class="form-control" name="year">
+            {section name=y max=($currentYear-$firstYear+1) loop=$currentYear+1 step=-1}
+                <option {if ($smarty.get.year eq $smarty.section.y.index)}  selected {/if} value={$smarty.section.y.index}>{$smarty.section.y.index}</option>
+            {/section}
+        </select>
+        <INPUT class="form-control" type="submit">
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm table-bordered">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>{t}month{/t}</th>
+                    <th>{t}added customers{/t}</th>
+                    <th>{t}deleted customers{/t}</th>
+                    <th>{t}balance{/t}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$customers item=i}
+                    <tr>
+                        <td>{$i.month}</td>
+                        <td>{$i.added}</td>
+                        <td>{$i.deleted}</td>
+                        <td>{$i.balance}</td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+{/block}

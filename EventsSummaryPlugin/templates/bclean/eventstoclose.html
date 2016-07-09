@@ -1,0 +1,26 @@
+{extends file="layout.html"}
+{block name=title}::: LMS :{$layout.pagetitle|striphtml} :::{/block}
+{block name=module_content}
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm table-bordered">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>{t}id{/t}</th>
+                    <th>{t}created at{/t}</th>
+                    <th>{t}title{/t}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$events item=i}
+                    <tr>
+                        <td>{counter}</td>
+                        <td>{$i.startdate}</td>
+                        <td><a href="?m=eventinfo&amp;id={$i.id}">{$i.title}</td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+{/block}

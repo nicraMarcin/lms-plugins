@@ -1,0 +1,37 @@
+{extends file="layout.html"}
+{block name=title}::: LMS :{$layout.pagetitle|striphtml} :::{/block}
+{block name=module_content}
+    <form class="form-inline" method="post" name="logip" action="?m=nodeipchangelog">
+        <select class="form-control" =name="ip" onchange="document.logip.submit();">
+            <option>Wybierz IP</option>
+            {section name=ip_list loop=$list_new_ip}
+                <option value="{$list_new_ip[ip_list].ipnum}">{$list_new_ip[ip_list].ip}</option>
+            {/section}
+        </select>
+        <input type="submit" class="hiddenbtn">
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>POSIADACZ IP</th>
+                    <th>STARE IP</th>
+                    <th>NOWE IP</th>
+                    <th>OSTATNIA ZMIANA</th>
+                </tr>
+            </thead>
+            {section name=j loop=$list_ip}
+                <tbody>
+                    <tr>
+                        <td style="padding:1em">{$list_ip[j].kto}</td>
+                        <td style="padding:1em">{$list_ip[j].from_ip}</td>
+                        <td style="padding:1em">{$list_ip[j].to_ip}</td>
+                        <td style="padding:1em">{$list_ip[j].do}</td>
+                    </tr>
+                </tbody>
+            {/section}
+        </table> 
+    </div>
+    <hr><p>Before log you must read README.md</p>
+{/block}

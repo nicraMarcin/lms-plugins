@@ -1,0 +1,28 @@
+{block name="nodeinfobox-rightcolumn" append}
+    <div class="card">
+        <div class="card-header">
+            {trans("Open local IP")} {$nodeinfo.ip} {trans("with port")}:
+        </div>
+        <div class="card-block">
+            {section name=arr loop=$nodeinfo.ports}
+                {assign var=item value=$nodeinfo.ports[arr]}
+                <a class="btn btn-sm btn-secondary" href="http://{$nodeinfo.ip}:{$item}">{$item}</a>
+            {/section}
+        </div>
+    </div>
+    {if $nodeinfo.ip_pub != "0.0.0.0"}
+
+        <div class="card">
+            <div class="card-header">
+                {trans("Open public IP")} {$nodeinfo.ip} {trans("with port")}:
+            </div>
+            <div class="card-block">
+                {trans("Open public IP")} {$nodeinfo.ip} {trans("with port")}:
+                {section name=arr loop=$nodeinfo.public_ports}
+                    {assign var=item value=$nodeinfo.public_ports[arr]}
+                    <a class="btn btn-sm btn-secondary" href="http://{$nodeinfo.ip_pub}:{$item}">{$item}</a>
+                {/section}
+            </div>
+        </div>
+    {/if}
+{/block}

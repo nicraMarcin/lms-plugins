@@ -1,0 +1,48 @@
+{extends file="layout.html"}
+{block name=title}::: LMS :{$layout.pagetitle|striphtml} :::{/block}
+{block name=module_content}
+    <form class="form-inline" method="get" name="form_expires_after" action="?m=endingagreements&expires_after={$expires_after}&doc_type={$doc_type}">
+        <INPUT TYPE="HIDDEN" NAME="m" VALUE="endingagreements">
+        {t}Document expire within{/t}:
+        <select class="form-control" name="expires_after">
+            <OPTION VALUE="0">... {trans("select period")} ...</OPTION>
+                {foreach from=$expire_after_periods key=key item=item}
+                <option {if $selected_expires_after == $key}selected{/if} value="{$key}">{$item}</option>
+            {/foreach}
+        </select>
+        {t}Document type{/t}:
+        <SELECT class="form-control" NAME="doc_type">
+            <OPTION VALUE="0">... {trans("select type")} ...</OPTION>
+                {foreach from=$doc_types key=key item=item}
+                <OPTION VALUE="{$key}" {if $selected_doc_type==$key} SELECTED{/if}>{$item}</OPTION>
+                {/foreach}
+        </SELECT>
+        <INPUT class="form-control" type="submit">
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm table-bordered">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>{t}Expiration date{/t}</th>
+                    <th>{t}Customer ID{/t}</th>
+                    <th>{t}Customer{/t}</th>
+                    <th>{t}Address{/t}</th>
+                    <th>{t}Document type{/t}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$contracts item=i}
+                    <tr>
+                        <td>{$i.todate}</td>
+                        <td>{$i.customerid}</td>
+                        <td><a href="?m=customerinfo&id={$i.customerid}">{$i.name}</a></td>
+                        <td>{$i.address}</td>
+                        <td><a href="?m=documentview&id={$i.docid}">{$i.typedescription}</a></td>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+    <p>{t}Documents found{/t}: {$count_contracts}</p>
+{/block}
