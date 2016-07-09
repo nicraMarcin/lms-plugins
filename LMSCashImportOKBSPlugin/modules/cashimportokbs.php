@@ -47,7 +47,7 @@ function parserXML($plik_xml) {
 
                 if (!mysql_query("INSERT INTO cashimport ( date , value , customer , description , customerid , hash ) VALUES ('$date', '$value', '$customer', '$description', '$customerid', '$hash')")) {
                     echo "<p>ERROR: " . mysql_errno() . ": " . mysql_error() . "</p>";
-		    echo "INSERT INTO cashimport ( date , value , customer , description , customerid , hash ) VALUES ('$date', '$value', '$customer', '$description', '$customerid', '$hash'))";
+                    echo "INSERT INTO cashimport ( date , value , customer , description , customerid , hash ) VALUES ('$date', '$value', '$customer', '$description', '$customerid', '$hash'))";
                 } else {
                     $i++;
                     $arr[$i] = array("id" => $i, "date" => $element->DATA_KS, "value" => $value, "customer" => $customer, "description" => $description);
